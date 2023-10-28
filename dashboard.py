@@ -9,13 +9,19 @@ st.set_page_config(page_title="Weather Forecast", page_icon="🌤️", layout="c
 previsao_icones = {
     "chuva leve": "🌦️",
     "chuva moderada": "🌧️",
-    "chuva forte": "⛈️",
+    "chuva forte": "🌧️",
+    "chuva muito forte": "⛈️",
     "nublado": "☁️",
     "céu limpo": "🌞",
     "nuvens dispersas": "🌤️",
     "algumas nuvens": "🌥️",
 }
 
+alerta_icones = {
+    "perigo potencial": "🟡",
+    "perigo": "🟠",
+    "grande perigo": "🔴"
+}
 
 def capitalize(string):
     return f"{string[0].upper()}{string[1:]}"
@@ -42,13 +48,23 @@ if not dados.coord:
 # Seleção do período de tempo a ser consultado
 database = Database(data, dados)
 
-relatorio = database.database()
+relatorio, alerta = database.database()
 st.markdown(f"#### Relatório de Previsão do tempo (Data: {database.str_data})")
 st.dataframe(relatorio, use_container_width=True)
 
 st.markdown(
     f"O clima é predominantemente **{capitalize(database.previsao)}** {previsao_icones.get(database.previsao, '')}"
 )
+
+if alerta:
+    st.markdown(
+        f"{alerta_icones.get(alerta['grau'])} **{capitalize(alerta['grau'])}** \n"
+        f"\n{alerta['definicao']}"
+        f"\n{alerta['riscos']}"
+        f"\n{alerta['instrucoes']}"
+    )
+else:
+    pass
 
 if grafico:
     fig = database.graficos()
