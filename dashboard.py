@@ -4,7 +4,7 @@ from conexao_api import Conexao_API
 from database import Database
 from datetime import date, timedelta
 
-st.set_page_config(page_title="Weather Forecast", page_icon="🌤️", layout="centered")
+st.set_page_config(page_title="Previsão do Tempo", page_icon="🌤️", layout="centered")
 
 previsao_icones = {
     "chuva leve": "🌦️",
